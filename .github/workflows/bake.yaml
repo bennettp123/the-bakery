@@ -80,6 +80,7 @@ jobs:
           echo ${{ steps.meta.outputs.bake-file }}
           if ! [ -e '${{ steps.meta.outputs.bake-file }}' ]; then
             echo bakefile, indeed, does not exist
+            ls -la ${{ steps.meta.outputs.bake-file }}
           fi
           cat ${{ steps.meta.outputs.bake-file }}
 
