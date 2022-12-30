@@ -1,39 +1,39 @@
 services:
   base:
-    image: bennettp123/sample-base:${TAG}
+    image: bennettp123/sample-base:${REF}
     build:
       dockerfile: ./Dockerfile.base
       args:
-        - TAG
+        - REF
 
   one:
-    image: bennettp123/sample-one:${TAG}
+    image: bennettp123/sample-one:${REF}
     build:
       dockerfile: ./Dockerfile.1
       args:
-        - TAG
+        - REF
       x-bake:
         contexts:
           bennettp123/sample-base:local-build: target:base
         pull: true
 
   two:
-    image: bennettp123/sample-two:${TAG}
+    image: bennettp123/sample-two:${REF}
     build:
       dockerfile: ./Dockerfile.2
       args:
-        - TAG
+        - REF
       x-bake:
         contexts:
           bennettp123/sample-base:local-build: target:base
         pull: true
 
   three:
-    image: bennettp123/sample-three:${TAG}
+    image: bennettp123/sample-three:${REF}
     build:
       dockerfile: ./Dockerfile.3
       args:
-        - TAG
+        - REF
       x-bake:
         contexts:
           bennettp123/sample-base:local-build: target:base
