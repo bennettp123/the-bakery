@@ -14,7 +14,7 @@ jobs:
       # https://github.com/docker/bake-action/issues/87#issuecomment-1184659151
       - name: Create matrix
         id: targets
-        steps: |
+        run: |
           echo "matrix=$(docker buildx bake --print | jq -cr '.group.default.targets')" >> "${GITHUB_OUTPUT}"
       - name: Show matrix
         run: |
