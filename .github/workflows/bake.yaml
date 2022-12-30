@@ -56,6 +56,12 @@ jobs:
           echo ${{ steps.images.outputs.images }}
           echo ${{ steps.images.outputs.tags }}
 
+      - name: Create empty bakefile
+        run: |
+          if ! [ -e ./docker-bake.hcl ]; then
+            echo 'target "${{ matrix.target }" {}' > ''./docker-bake.hcl'
+          fi
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
@@ -76,7 +82,7 @@ jobs:
           push: true
           targets: ${{ matrix.target }}
           files:
-            docker-compose.yaml
+            ./docker-compose.yaml
             ${{ steps.meta.outputs.bake-file }}
           set: |
             *.cache-from=type=gha,scope=build-${{ matrix.target }}
