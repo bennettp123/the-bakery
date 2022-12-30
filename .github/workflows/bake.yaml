@@ -43,6 +43,26 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Get images
+        id: images
+        steps: |
+          TAGS="$(docker buildx bake --print | jq -cr '.target.${{ matrix.target }}.tags')"
+          IMAGES="$(jq -cr '.[] | sub(":.*$"; "")' <<<"${TAGS}" | sort | uniq)"
+          echo "tags=${TAGS}" >> "${GITHUB_OUTPUT}"
+          echo "images=${IMAGES}" >> "${GITHUB_OUTPUT}"
+
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ steps.images.outputs.images }}
+          tags: |
+            type=schedule
+            type=ref,event=branch
+            type=ref,event=tag
+            type=ref,event=pr
+            type=raw,value=latest,enable={{is_default_branch}}
+
       - name: Build and push
         uses: docker/bake-action@v2
         with:
@@ -52,3 +72,6 @@ jobs:
           set: |
             *.cache-from=type=gha,scope=build-${{ matrix.target }}
             *.cache-to=type=gha,scope=build-${{ matrix.target }},mode=max
+            ${{ matrix.target }}.tags: ${{ steps.meta.outputs.tags }}
+            ${{ matrix.target }}.labels: ${{ steps.meta.outputs.labels }}
+
