@@ -53,7 +53,7 @@ jobs:
 
       - name: Show images
         run: |
-          echo ${{ steps.images.outputs.tags }}
+          echo ${{ steps.images.outputs.images }}
           echo ${{ steps.images.outputs.tags }}
 
       - name: Docker meta
