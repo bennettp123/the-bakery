@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   targets:
@@ -17,11 +18,23 @@ jobs:
         id: targets
         run: |
           echo "matrix=$(docker buildx bake --print | jq -cr '.group.default.targets')" >> "${GITHUB_OUTPUT}"
-      - name: Show matrix
+      - name: Create bake settings
+        id: settings
         run: |
-          echo ${{ steps.targets.outputs.matrix }}
+          echo "bake-settings<<EOF" >> "${GITHUB_OUTPUT}"
+          for TARGET in $(echo '${{ steps.targets.outputs.matrix }}' | jq -cr '.[]'); do
+            echo "${TARGET}.cache-from=type=gha,scope=build-${TARGET}" >> "${GITHUB_OUTPUT}"
+            echo "${TARGET}.cache-to=type=gha,scope=build-${TARGET},mode=max" >> "${GITHUB_OUTPUT}"
+            echo "${TARGET}.platforms=linux/arm64,linux/amd64" >> "${GITHUB_OUTPUT}"
+          done
+          echo "EOF" >> "${GITHUB_OUTPUT}"
+      - name: Show outputs
+        run: |
+          echo matrix: ${{ steps.targets.outputs.matrix }}
+          echo bake-settings: ${{ steps.settings.outputs.bake-settings }}
     outputs:
       matrix: ${{ steps.targets.outputs.matrix }}
+      bake-settings: ${{ steps.settings.outputs.bake-settings }}
 
   bake:
     runs-on: ubuntu-latest
@@ -82,7 +95,4 @@ jobs:
           files: |
             ./docker-compose.yaml
             ${{ steps.meta.outputs.bake-file }}
-          set: |
-            *.cache-from=type=gha,scope=build-${{ matrix.target }}
-            *.cache-to=type=gha,scope=build-${{ matrix.target }},mode=max
-            *.platform=linux/arm64,linux/amd64
+          set: ${{ needs.targets.outputs.bake-settings }}
