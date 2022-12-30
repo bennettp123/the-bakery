@@ -67,6 +67,7 @@ jobs:
             type=ref,event=tag
             type=ref,event=pr
             type=raw,value=latest,enable={{is_default_branch}}
+          bake-target: ${{ matrix.target }}
 
       - name: Build and push
         uses: docker/bake-action@v2
@@ -74,9 +75,9 @@ jobs:
           pull: true
           push: true
           targets: ${{ matrix.target }}
+          files:
+            docker-compose.yaml
+            ${{ steps.meta.outputs.bake-file }}
           set: |
             *.cache-from=type=gha,scope=build-${{ matrix.target }}
             *.cache-to=type=gha,scope=build-${{ matrix.target }},mode=max
-            ${{ matrix.target }}.tags: ${{ steps.meta.outputs.tags }}
-            ${{ matrix.target }}.labels: ${{ steps.meta.outputs.labels }}
-
