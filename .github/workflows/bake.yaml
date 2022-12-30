@@ -75,14 +75,19 @@ jobs:
             type=raw,value=latest,enable={{is_default_branch}}
           bake-target: ${{ matrix.target }}
 
-      - name: What the actual fuck is going on with this bakefile
+      - name: What the actual fuck is going on with these bakefiles
+        id: wtf
         run: |
           echo ${{ steps.meta.outputs.bake-file }}
           if ! [ -e '${{ steps.meta.outputs.bake-file }}' ]; then
             echo bakefile, indeed, does not exist
             ls -la ${{ steps.meta.outputs.bake-file }}
           fi
-          cat ${{ steps.meta.outputs.bake-file }} > ./my-very-own-docker-metadata-action-bakefile.json
+          MY_TMPDIR="$(mktemp -d './docker-metadata-action-XXXXXXXX')"
+          cp ${{ steps.meta.outputs.bake-file }} "${MY_TMPDIR}"
+          echo "docker_compose_yaml=$(pwd)/docker-compose.yaml" >> "${GITHUB_OUTPUT}"
+          echo "metadata_action_bakefile=$(cd "${MY_TMPDIR}" && pwd)/$(basename ${{ steps.meta.outputs.bake-file }})" >> "${GITHUB_OUTPUT}"
+          echo "workdir=$(pwd)" >> "${GITHUB_OUTPUT}"
 
       - name: Build and push
         uses: docker/bake-action@v2
@@ -90,9 +95,10 @@ jobs:
           pull: true
           push: true
           targets: ${{ matrix.target }}
+          workdir: ${{ steps.wtf.outputs.workdir }}
           files:
-            ./docker-compose.yaml
-            ./my-very-own-docker-metadata-action-bakefile.json
+            ${{ steps.wtf.outputs.docker_compose_yaml }}
+            ${{ steps.wtf.outputs.metadata_action_bakefile }}
           set: |
             *.cache-from=type=gha,scope=build-${{ matrix.target }}
             *.cache-to=type=gha,scope=build-${{ matrix.target }},mode=max
