@@ -1,6 +1,17 @@
 services:
-  my-service:
-    image: bennettp123/pihole-dote:experimental
+  one:
+    image: bennettp123/sample-one:latest
     build:
-      context: https://github.com/bennettp123/docker-pihole-dote.git
-
+      context: .
+      dockerfile: ./Dockerfile.1
+  two:
+    image: bennettp123/sample-two:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile.2
+  three:
+    image: bennettp123/sample-three:latest
+    build:
+      context: .
+      dockerfile: ./Dockerfile.3
+  
