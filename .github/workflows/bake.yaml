@@ -51,6 +51,11 @@ jobs:
           echo "tags=${TAGS}" >> "${GITHUB_OUTPUT}"
           echo "images=${IMAGES}" >> "${GITHUB_OUTPUT}"
 
+      - name: Show images
+        run: |
+          echo ${{ steps.images.outputs.tags }}
+          echo ${{ steps.images.outputs.tags }}
+
       - name: Docker meta
         id: meta
         uses: docker/metadata-action@v4
