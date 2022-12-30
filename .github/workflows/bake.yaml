@@ -48,8 +48,8 @@ jobs:
         run: |
           TAGS="$(docker buildx bake --print | jq -cr '.target.${{ matrix.target }}.tags')"
           IMAGES="$(jq '.[] | sub(":.*$"; "")' <<<"${TAGS}" | sort | uniq | jq -scr)"
-          echo "tags=${TAGS}" >> "${GITHUB_OUTPUT}"
-          echo "images=${IMAGES}" >> "${GITHUB_OUTPUT}"
+          echo "tags=$(jq -cr 'join(",")' <<< "${TAGS}")" >> "${GITHUB_OUTPUT}"
+          echo "images=$(jq -cr 'join(",")' <<< "${IMAGES}")" >> "${GITHUB_OUTPUT}"
 
       - name: Show images
         run: |
