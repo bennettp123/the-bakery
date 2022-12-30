@@ -96,7 +96,7 @@ jobs:
           push: true
           targets: ${{ matrix.target }}
           workdir: ${{ steps.wtf.outputs.workdir }}
-          files:
+          files: |
             ${{ steps.wtf.outputs.docker_compose_yaml }}
             ${{ steps.wtf.outputs.metadata_action_bakefile }}
           set: |
