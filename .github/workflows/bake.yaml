@@ -82,7 +82,7 @@ jobs:
             echo bakefile, indeed, does not exist
             ls -la ${{ steps.meta.outputs.bake-file }}
           fi
-          cat ${{ steps.meta.outputs.bake-file }}
+          cat ${{ steps.meta.outputs.bake-file }} > ./my-very-own-docker-metadata-action-bakefile.json
 
       - name: Build and push
         uses: docker/bake-action@v2
@@ -92,7 +92,7 @@ jobs:
           targets: ${{ matrix.target }}
           files:
             ./docker-compose.yaml
-            ${{ steps.meta.outputs.bake-file }}
+            ./my-very-own-docker-metadata-action-bakefile.json
           set: |
             *.cache-from=type=gha,scope=build-${{ matrix.target }}
             *.cache-to=type=gha,scope=build-${{ matrix.target }},mode=max
