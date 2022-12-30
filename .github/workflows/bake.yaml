@@ -59,7 +59,7 @@ jobs:
       - name: Create empty bakefile
         run: |
           if ! [ -e ./docker-bake.hcl ]; then
-            echo 'target "${{ matrix.target }}" {}' > ''./docker-bake.hcl'
+            echo 'target "${{ matrix.target }}" {}' > './docker-bake.hcl'
           fi
 
       - name: Docker meta
