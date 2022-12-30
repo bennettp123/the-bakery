@@ -4,14 +4,14 @@ services:
     build:
       dockerfile: ./Dockerfile.base
       args:
-        - TAG=${${GITHUB_SHA:+sha-${GITHUB_SHA}}:-local-build}
+        - TAG
 
   one:
     image: bennettp123/sample-one:${TAG}
     build:
       dockerfile: ./Dockerfile.1
       args:
-        - TAG=${${GITHUB_SHA:+sha-${GITHUB_SHA}}:-local-build}
+        - TAG
       x-bake:
         contexts:
           bennettp123/sample-base:local-build: target:base
@@ -22,7 +22,7 @@ services:
     build:
       dockerfile: ./Dockerfile.2
       args:
-        - TAG=${${GITHUB_SHA:+sha-${GITHUB_SHA}}:-local-build}
+        - TAG
       x-bake:
         contexts:
           bennettp123/sample-base:local-build: target:base
@@ -33,7 +33,7 @@ services:
     build:
       dockerfile: ./Dockerfile.3
       args:
-        - TAG=${${GITHUB_SHA:+sha-${GITHUB_SHA}}:-local-build}
+        - TAG
       x-bake:
         contexts:
           bennettp123/sample-base:local-build: target:base
