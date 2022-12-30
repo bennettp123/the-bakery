@@ -85,4 +85,4 @@ jobs:
           set: |
             *.cache-from=type=gha,scope=build-${{ matrix.target }}
             *.cache-to=type=gha,scope=build-${{ matrix.target }},mode=max
-            *.platform: linux/arm64,linux/amd64
+            *.platform=linux/arm64,linux/amd64
