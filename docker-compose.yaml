@@ -1,0 +1,6 @@
+services:
+  my-service:
+    image: bennettp123/pihole-dote:experimental
+    build:
+      context: https://github.com/bennettp123/docker-pihole-dote.git
+
