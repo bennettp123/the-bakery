@@ -42,6 +42,8 @@ jobs:
     strategy:
       matrix:
         target: ${{ fromJson(needs.targets.outputs.targets) }}
+        exclude:
+          target: base
       fail-fast: false
     steps:
       - name: Checkout

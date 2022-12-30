@@ -1,0 +1,2 @@
+FROM busybox
+RUN sleep 30 && echo done

@@ -1,17 +1,29 @@
 services:
+  base:
+    image: bennettp123/sample-base
+    build:
+      dockerfile: ./Dockerfile.base
+
   one:
-    image: bennettp123/sample-one:latest
+    image: bennettp123/sample-one
     build:
-      context: .
       dockerfile: ./Dockerfile.1
+      x-bake:
+        contexts:
+          bennettp123/sample-base: target:base
+
   two:
-    image: bennettp123/sample-two:latest
+    image: bennettp123/sample-two
     build:
-      context: .
       dockerfile: ./Dockerfile.2
+      x-bake:
+        contexts:
+          bennettp123/sample-base: target:base
+
   three:
-    image: bennettp123/sample-three:latest
+    image: bennettp123/sample-three
     build:
-      context: .
       dockerfile: ./Dockerfile.3
-  
+      x-bake:
+        contexts:
+          bennettp123/sample-base: target:base
