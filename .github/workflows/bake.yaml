@@ -89,7 +89,7 @@ jobs:
 
       - name: Populate env file
         run: |
-          echo 'GITHUB_SHA="${{ github.sha }}"' >> ./bake.env.hcl
+          echo 'TAG="sha-${{ github.sha }}"' >> ./bake.env.hcl
 
       - name: Build and push
         uses: docker/bake-action@v2
@@ -159,7 +159,7 @@ jobs:
 
       - name: Populate env file
         run: |
-          echo 'GITHUB_SHA="${{ github.sha }}"' >> ./bake.env.hcl
+          echo 'TAG="sha-${{ github.sha }}"' >> ./bake.env.hcl
 
       - name: Build and push
         uses: docker/bake-action@v2
