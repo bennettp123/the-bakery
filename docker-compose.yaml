@@ -8,22 +8,31 @@ services:
     image: bennettp123/sample-one
     build:
       dockerfile: ./Dockerfile.1
+      args:
+        - GITHUB_SHA
       x-bake:
         contexts:
           bennettp123/sample-base: target:base
+        pull: true
 
   two:
     image: bennettp123/sample-two
     build:
       dockerfile: ./Dockerfile.2
+      args:
+        - GITHUB_SHA
       x-bake:
         contexts:
           bennettp123/sample-base: target:base
+        pull: true
 
   three:
     image: bennettp123/sample-three
     build:
       dockerfile: ./Dockerfile.3
+      args:
+        - GITHUB_SHA
       x-bake:
         contexts:
           bennettp123/sample-base: target:base
+        pull: true

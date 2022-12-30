@@ -1,1 +1,3 @@
-FROM bennettp123/sample-base
+ARG GITHUB_SHA
+FROM bennettp123/sample-base:${GITHUB_SHA}
+RUN sleep 30 && echo one done
