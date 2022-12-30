@@ -1,38 +1,38 @@
 services:
   base:
-    image: bennettp123/sample-base
+    image: bennettp123/sample-base:${GITHUB_SHA}
     build:
       dockerfile: ./Dockerfile.base
 
   one:
-    image: bennettp123/sample-one
+    image: bennettp123/sample-one:${GITHUB_SHA}
     build:
       dockerfile: ./Dockerfile.1
       args:
         - GITHUB_SHA
       x-bake:
         contexts:
-          bennettp123/sample-base: target:base
+          bennettp123/sample-base:local-build: target:base
         pull: true
 
   two:
-    image: bennettp123/sample-two
+    image: bennettp123/sample-two:${GITHUB_SHA}
     build:
       dockerfile: ./Dockerfile.2
       args:
         - GITHUB_SHA
       x-bake:
         contexts:
-          bennettp123/sample-base: target:base
+          bennettp123/sample-base:local-build: target:base
         pull: true
 
   three:
-    image: bennettp123/sample-three
+    image: bennettp123/sample-three:${GITHUB_SHA}
     build:
       dockerfile: ./Dockerfile.3
       args:
         - GITHUB_SHA
       x-bake:
         contexts:
-          bennettp123/sample-base: target:base
+          bennettp123/sample-base:local-build: target:base
         pull: true
