@@ -22,7 +22,7 @@ jobs:
         id: settings
         run: |
           echo "bake-settings<<EOF" >> "${GITHUB_OUTPUT}"
-          for TARGET in $(echo '${{ steps.targets.outputs.matrix }}' | jq -cr '.[]'); do
+          for TARGET in $(echo '${{ steps.targets.outputs.targets }}' | jq -cr '.[]'); do
             echo "${TARGET}.cache-from=type=gha,scope=build-${TARGET}" >> "${GITHUB_OUTPUT}"
             echo "${TARGET}.cache-to=type=gha,scope=build-${TARGET},mode=max" >> "${GITHUB_OUTPUT}"
             echo "${TARGET}.platform=linux/arm64,linux/amd64" >> "${GITHUB_OUTPUT}"
