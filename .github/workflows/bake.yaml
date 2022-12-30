@@ -163,8 +163,8 @@ jobs:
         # use branch name to preserve cache
         run: |
           REF="$(echo "${GITHUB_REF_NAME}" | sed 's/[^[:alnum:]]/_/g')"
-          docker pull 'bennettp123/sample-base:sha-${{ github.sha }}'
-          docker tag 'bennettp123/sample-base:sha-${{ github.sha }}' "bennettp123/sample-base:${REF}"
+          docker pull bennettp123/sample-base:"sha-${GITHUB_REF}"
+          docker tag bennettp123/sample-base:"sha-${GITHUB_REF}" bennettp123/sample-base:"${REF}"
           echo "REF=\"${REF}\"" >> ./bake.env.hcl
           cat ./bake.env.hcl
 
