@@ -18,7 +18,7 @@ with caching, using github actions.
 * Gets the list of targets using `docker buildx bake --print`
 * Generate `bake-settings`, with cache-from and target platform.
 * Creates a GHA matrix from the targets
-* Uses [`docker/metadata-action`](https://github.com/docker/metadata-action) to generate tags and labels. By default, this action writes its output to a target named `docker-metadata-action`; the [example](https://github.com/docker/metadata-action#bake-definition) inherits this target. However, `buildx bake` does not support `inherits` when building from docker-compose.yaml. To work around this, override the bake target to match the target we are building. 
+* Uses [`docker/metadata-action`](https://github.com/docker/metadata-action) to generate tags and labels. By default, this action writes its output to a target named `docker-metadata-action`; the [example](https://github.com/docker/metadata-action#bake-definition) inherits this target. However, `buildx bake` does not support `inherits` when building from docker-compose.yaml. To work around this, override the bake target to match the target we are building.
 * Uses [`docker/bake-action`](https://github.com/docker/bake-action) to build the target. We scope it to a single target using the GHA matrix `${{ matrix.target }}`.
 
 Possible improvements:
